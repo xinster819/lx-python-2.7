@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-import time
+from utils.lru import LRU_CACHE, LRU_LIMIT
 
-limit_rate = {}
+
+_cache = LRU_LIMIT(2, 3)
 
 def rate_limit(rate=0):
     def _decorator(func):
@@ -10,8 +11,9 @@ def rate_limit(rate=0):
                 uri = self.request.uri
                 if not uri:
                     pass
-                if _rate_limit(rate, uri):
-                    {'dad':"Hello, wofffrld"}
+                if _cache.incr(uri, 1) > 2:
+                    print(_cache.get(uri).v)
+                    self.write({'ddd':'dee'})
                 else:
                     func(self)
             except Exception as e:
@@ -19,15 +21,3 @@ def rate_limit(rate=0):
                 traceback.print_exc()
         return func_wrapper
     return _decorator
-
-def _rate_limit(rate, uri):
-    print(limit_rate.get(uri, 0))
-    is_limit = False
-    if rate == 0:
-        return is_limit
-
-    if limit_rate.get(uri, 0) > rate:
-        is_limit = True
-    limit_rate[uri] = limit_rate.get(uri, 0) + 1
-
-    return is_limit
