@@ -11,8 +11,7 @@ def rate_limit(rate=0):
                 uri = self.request.uri
                 if not uri:
                     pass
-                if _cache.incr(uri, 1) > 2:
-                    print(_cache.get(uri).v)
+                if _cache.incr(uri, 1) > rate:
                     self.write({'ddd':'dee'})
                 else:
                     func(self)

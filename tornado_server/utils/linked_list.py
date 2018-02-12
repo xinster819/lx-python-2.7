@@ -8,10 +8,10 @@ class ExpireDoublyLinkedEntry(object):
     数据缓存
     '''
 
-    def __init__(self, k, v, milliseconds, prev=None, next=None, auto_update_expire=False):
+    def __init__(self, k, v, seconds, prev=None, next=None, auto_update_expire=False):
         self.k = k
         self.v = v
-        self.milliseconds = milliseconds
+        self.seconds = seconds
         self.prev = prev
         self.next = next
         self.update_expire()
@@ -23,7 +23,7 @@ class ExpireDoublyLinkedEntry(object):
         return True if (self.expire > 0 and time() > self.expire) else False
 
     def update_expire(self):
-        self.expire = -1 if self.milliseconds <= 0 else (time() + self.milliseconds)
+        self.expire = -1 if self.seconds <= 0 else (time() + self.seconds)
 
     def update(self, v):
         self.v = v

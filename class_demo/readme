@@ -1,0 +1,59 @@
+python class
+
+1. namespace & scope
+官方定义：namespace is a mapping from names to objects.
+不同的namespace的create 和 lifetime都不一样， 具体：
+
+四种namespace:
+
+1. built-in namespace：针对built-in types(比如: list(), dict(), abs()等，python内置方法), create: 项目启动，lifetime: whole life
+2. global namespace: module global, create: read module的时候， lifetime: 一直到系统终止
+3. local namespace: function called, create：调用开始  lifetime: 调用结束 or Exception
+
+scope: 核心原则: LEGB（LOCAL -> ENCLOSED -> GLOBAL -> BUILT-IN）
+
+参考资料：
+http://sebastianraschka.com/Articles/2014_python_scope_and_namespaces.html
+
+
+2. python支持multiple-inheritance
+
+multiple-inheritance: 都会遇到base-classes的调用顺序问题，对于调用顺序的问题的解决方案称作：method resolution order(mro)
+
+python的super关键字：查询mro的下一个方法
+
+
+python的class存在两种定义：old-style-class,  new-style-class
+
+old-style-class:
+
+mro: depth-first, left-to-right
+
+简单解释一下： depth-first，优先深度遍历， 然后再从左到右遍历
+
+举例：
+
+class A:
+  def save(self): pass
+
+class B(A): pass
+
+class C(A):
+  def save(self): pass
+
+class D(B, C): pass
+
+x = D()
+
+x的查询顺序： D, B, A, C, A
+
+
+new-style-class：
+mro：depth-first, left-to-right,  有重复只保留最后一个
+
+上面的case：
+x的查询顺序： D, B, C, A
+
+参考资料：
+https://stackoverflow.com/questions/3277367/how-does-pythons-super-work-with-multiple-inheritance
+http://python-history.blogspot.com/2010/06/method-resolution-order.html
